@@ -24,4 +24,18 @@ const ingreso_post = async (titulo, url, descripcion) => {
     const { rows } = await pool.query(query, values);
     return rows[0]; // Devuelve el nuevo post agregado
 };
-module.exports = {datos_ingresados,ingreso_post}
+
+const like = async (id) => {
+    const query = "UPDATE posts SET likes = likes + 1 WHERE id = $1 RETURNING *;";
+    const values = [id];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+};
+
+const deletePost = async (id) => {
+    const query = "DELETE FROM posts WHERE id = $1 RETURNING *;";
+    const values = [id];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+}
+module.exports = {datos_ingresados,ingreso_post, like, deletePost}
